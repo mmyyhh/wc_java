@@ -45,5 +45,69 @@ public class VendingMachineTest {
 		int bills = vm.billsToReturn();
 		assertEquals(0, bills);
 	}
+	
+	@Test
+	public void test_잔액이_천원미만_오백원이상인경우_오백원하나지급() {
+		vm.inputMoney(1000);
+		vm.chooseProduct(350);
+		assertEquals(1, vm.coinsOf500ToReturn());
+		assertEquals((1000-350)-(500*1), vm.showMoney());
+	}
+	
+	@Test
+	public void test_잔액이_오백원미만인경우_오백원갯수는0개() {
+		vm.inputMoney(500);
+		vm.chooseProduct(350);
+		int coinsOf500 = (500 - 350) / 500;
+		assertEquals(0, vm.coinsOf500ToReturn());
+	}
+	
+	@Test
+	public void test_잔액이_오백원미만_백원이상인경우_백원하나지급() {
+		vm.inputMoney(500);
+		vm.chooseProduct(350);
+		assertEquals(1, vm.coinsOf100ToReturn());
+		assertEquals((500-350)-(100*1), vm.showMoney());
+	}
+	
+	@Test
+	public void test_잔액이_백원미만인경우_오십원하나지급() {
+		vm.inputMoney(500);
+		vm.chooseProduct(450);
+		assertEquals(1, vm.coinsOf50ToReturn());
+		assertEquals((500-450)-(50*1), vm.showMoney());
+	}
+	
+	@Test
+	public void test_잔액이_오십원미만인경우_미지급() {
+		vm.inputMoney(500);
+		vm.chooseProduct(460);
+		assertEquals(0, vm.coinsOf50ToReturn());
+		assertEquals((500-460)-(50*0), vm.showMoney());
+	}
+	
+	@Test
+	public void test_잔액이_오십원미만인경우_십원하나지급() {
+		vm.inputMoney(500);
+		vm.chooseProduct(490);
+		assertEquals(1, vm.coinsOf10ToReturn());
+		assertEquals((500-490)-(10*1), vm.showMoney());
+	}
+	
+	@Test
+	public void test_전체계산() {
+		vm.inputMoney(3000);
+		vm.chooseProduct(1340);
+		vm.calculate();
+		vm.display();
+	}
+	
+	@Test
+	public void test_전체계산2() {
+		vm.inputMoney(2000);
+		vm.chooseProduct(1340);
+		vm.calculate();
+		vm.display();
+	}
 
 }
