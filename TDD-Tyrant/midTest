@@ -1,0 +1,7 @@
+1. IntArraySorter.java 어서션 조건
+2. Robots.java 매직 넘버
+3. flag 쓰지 말고 break 써서 나와라 SimpleDatabase.java
+4. TDD : 어노테이션(beforeclass 한번만, before 매번, after), assertEquals 같은 값
+5. String Calculator 테스트케이스 작성하시오.
+
+필기 : 자바스크립트(호이스트 등), 어노테이션
