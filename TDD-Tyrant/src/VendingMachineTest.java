@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class VendingMachineTest {
+	
 	VendingMachine vm;
 	
 	@Before

